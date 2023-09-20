@@ -88,18 +88,3 @@ EXCEPTION
      raise_error('User Delete Error:'||SQLERRM);
   END delete_user;
 END PKG_USERS;
-
-SET SERVEROUTPUT ON;
-EXEC pkg_users.insert_user('Leman','Huseynli','hlman9162@gmail.com','+994 70 818 9243','IT',2500);
-EXEC pkg_users.insert_user('Nilufer','Memmedova','memmedova333@gmail.com','+994 51 245 5555','IT',3000);
-EXEC pkg_users.insert_user('Roya','Eliyeva','roya111@gmail.com','+994 51 450 5050','IT',2300);
-EXEC pkg_users.insert_user('Nazperi,'Rehimova','rahimova566@gmail.com','+994 51 450 5151','IT',2700);
-EXEC pkg_users.insert_user('Jale','Abdullayeva','jaleabdullayeva@gmail.com','+994 55 470 3467','IT',3400);
-EXEC pkg_users.insert_user('Elvina','Karimli','karimlielvina@gmail.com','+994 51 300 5151','SMM',1500);
-EXEC pkg_users.insert_user('Konul','Aliyeva','aliyeva2004@gmail.com','+994 51 450 9854','MAN',2000);
-EXEC pkg_users.insert_user('Fatime','Hesenova','fatime2345@gmail.com','+994 51 477 9877','BIZNES',3400);
-EXEC pkg_users.insert_user('Lamiye','Abbasova','abbasova54@gmail.com','+994 51 450 6634','BIZNES',3400);
-EXEC pkg_users.insert_user('Aysel','Salmanova','salmanova777@gmail.com','+994 51 760 7777','DESIGN',3400);
-EXEC pkg_users.insert_user('Emiliya','Mahmudova','mahmudova@gmail.com','+994 51 885 6634','DESIGN',3400);
-EXEC pkg_users.delete_user(19);
-EXEC pkg_users.delete_user(12);
