@@ -47,7 +47,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('User Insertion Error:'||SQLERRM);
+       raise_error('Task Insertion Error:'||SQLERRM);
   END insert_task;
 
   PROCEDURE update_task(
@@ -74,7 +74,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('User Update Error:'||SQLERRM);
+       raise_error('Task Update Error:'||SQLERRM);
   END update_task;
    PROCEDURE delete_task(
    p_task_id             task.task_ıd%type) AS
@@ -84,8 +84,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
            EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('User Delete Error:'||SQLERRM);
+       raise_error('Task Delete Error:'||SQLERRM);
     END delete_task;
 END pkg_tasks;
 
-SELECT*FROM task;
+
+
