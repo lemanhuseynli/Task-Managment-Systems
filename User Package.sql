@@ -35,7 +35,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_users AS
     COMMIT;
   EXCEPTION
     WHEN OTHERS THEN
-      log_error('Delete User Error',sqlcode, sqlerrm);
+      log_error(' User Insertion Error',sqlcode, sqlerrm);
   END insert_user;
 
   PROCEDURE update_user( 
@@ -60,7 +60,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_users AS
     COMMIT;
   EXCEPTION 
     WHEN OTHERS THEN
-     log_error('Delete User Error',sqlcode, sqlerrm);
+     log_error('User Update Error',sqlcode, sqlerrm);
   END update_user;
 
   PROCEDURE delete_user(
@@ -71,7 +71,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_users AS
     COMMIT;
   EXCEPTION
     WHEN OTHERS THEN
-      log_error('Delete User Error',sqlcode, sqlerrm);
+      log_error('User Delete Error',sqlcode, sqlerrm);
   END delete_user;
 END PKG_USERS;
 
