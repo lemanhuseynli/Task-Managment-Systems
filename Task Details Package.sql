@@ -117,6 +117,23 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  PROCEDURE delete_to_do_list(
    p_list_id          to_do_list.lıst_ıd%type
  );
+ PROCEDURE insert_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type,
+  p_task_id                   task_notification.task_ıd%type,
+  p_user_id                   task_notification.user_ıd%type,
+  p_notification_message      task_notification.notıfıcatıon_message%type,
+  p_notification_date_time    task_notification.notıfıcatıon_date_tıme%type
+ );
+ PROCEDURE  update_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type,
+  p_task_id                   task_notification.task_ıd%type,
+  p_user_id                   task_notification.user_ıd%type,
+  p_notification_message      task_notification.notıfıcatıon_message%type,
+  p_notification_date_time    task_notification.notıfıcatıon_date_tıme%type
+ );
+ PROCEDURE delete_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type
+ );
 
  END pkg_task_details;
  
@@ -466,7 +483,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Progress Percentage Update Error:'||SQLERRM);
+       log_error('Progress Percentage Update Error:',sqlcode,sqlerrm);
  END update_progress_percentage;
  
  PROCEDURE insert_to_do_list(
@@ -482,7 +499,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('To Do List Insertion Error:'||SQLERRM);
+        log_error('To Do list Insertion Error:',sqlcode,sqlerrm);
  END insert_to_do_list;
  
  
@@ -502,7 +519,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('To Do List Update Error:'||SQLERRM);
+        log_error('To Do List Update Error:',sqlcode,sqlerrm);
  END update_to_do_list;
  
  
@@ -516,10 +533,59 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('To Do List Delete Error:'||SQLERRM);
+        log_error('To Do List Delete Error:',sqlcode,sqlerrm);
   END delete_to_do_list;
+ 
+ PROCEDURE insert_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type,
+  p_task_id                   task_notification.task_ıd%type,
+  p_user_id                   task_notification.user_ıd%type,
+  p_notification_message      task_notification.notıfıcatıon_message%type,
+  p_notification_date_time    task_notification.notıfıcatıon_date_tıme%type) AS
+  
+   BEGIN
+    INSERT INTO task_notification(notıfıcatıon_ıd,task_ıd,user_ıd,notıfıcatıon_message,notıfıcatıon_date_tıme)
+    VALUES(p_notification_id, p_task_id ,p_user_id,p_notification_message,p_notification_date_time );
+    COMMIT;          
+     EXCEPTION
+   WHEN OTHERS THEN
+     ROLLBACK;
+       log_error('Task Notification Insertion Error:',sqlcode,sqlerrm);
+ END insert_task_notification ;
+  
+ PROCEDURE  update_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type,
+  p_task_id                   task_notification.task_ıd%type,
+  p_user_id                   task_notification.user_ıd%type,
+  p_notification_message      task_notification.notıfıcatıon_message%type,
+  p_notification_date_time    task_notification.notıfıcatıon_date_tıme%type) AS
+  
+   BEGIN
+    UPDATE task_notification
+       SET  notıfıcatıon_message=p_notification_message,
+            notıfıcatıon_date_tıme=p_notification_date_time 
+          WHERE notıfıcatıon_ıd= p_notification_id;
+    COMMIT;
+ EXCEPTION
+  WHEN OTHERS THEN
+     ROLLBACK;
+        log_error('Task Notification Update Error:',sqlcode,sqlerrm);
+ END update_task_notification;
+  
+  
+ PROCEDURE delete_task_notification(
+  p_notification_id           task_notification.notıfıcatıon_ıd%type) AS
+  
+ BEGIN 
+     DELETE FROM task_notification
+      WHERE notıfıcatıon_ıd= p_notification_id;
+     COMMIT;
+  EXCEPTION
+  WHEN OTHERS THEN
+     ROLLBACK;
+        log_error('Task Notification Delete Error:',sqlcode,sqlerrm);
+  END delete_task_notification;
  
 END pkg_task_details;
 
- 
  
