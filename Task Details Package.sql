@@ -1,6 +1,4 @@
 CREATE OR REPLACE PACKAGE pkg_task_details AS
- PROCEDURE raise_error(p_error_message VARCHAR2);
-  
  PROCEDURE insert_task_dependency(
   p_dependency_id    task_dependency.dependency_ıd%type,
   p_parent_task_id   task_dependency.parent_task_ıd%type,
@@ -124,11 +122,6 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  
  
  CREATE OR REPLACE PACKAGE BODY pkg_task_details AS
-  PROCEDURE raise_error(p_error_message VARCHAR2) AS
-   BEGIN
-    ROLLBACK;
-    RAISE_APPLICATION_ERROR(-20000, p_error_message);
-  END raise_error;
 
  PROCEDURE insert_task_dependency(
   p_dependency_id    task_dependency.dependency_ıd%type,
@@ -142,7 +135,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Dependency Insertion Error:'||SQLERRM);
+      log_error('Task Dependency Insertion Error',sqlcode, sqlerrm);
   END insert_task_dependency;
   
   PROCEDURE update_task_dependency(
@@ -159,7 +152,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Dependency Update Error:'||SQLERRM);
+       log_error('Task Dependency Update Error:',sqlcode,sqlerrm);
  END update_task_dependency;
  
   PROCEDURE delete_task_dependency(
@@ -171,7 +164,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Dependency Delete Error:'||SQLERRM);
+       log_error('Task Dependency Delete Error:',sqlcode,sqlerrm);
  END delete_task_dependency;
  
  
@@ -186,7 +179,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Insertion Error:'||SQLERRM);
+       log_error('Task Tag Insertion Error:',sqlcode,sqlerrm);
  END insert_task_tag;
  
  PROCEDURE update_task_tag(
@@ -201,7 +194,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Update Error:'||SQLERRM);
+       log_error('Task Tag Update Error:',sqlcode,sqlerrm);
  END update_task_tag;
   
  PROCEDURE delete_task_tag(
@@ -213,7 +206,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Delete Error:'||SQLERRM);
+       log_error('Task Tag Delete Error:',sqlcode,sqlerrm);
   END delete_task_tag;
   
   PROCEDURE insert_task_tag_assignment(
@@ -228,7 +221,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Assignment Insertion Error:'||SQLERRM);
+       log_error('Task Tag Assignment Insertion Error:',sqlcode,sqlerrm);
  END insert_task_tag_assignment;
   
  PROCEDURE update_task_tag_assignment(
@@ -245,7 +238,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Assignment Update Error:'||SQLERRM);
+        log_error('Task Tag Assignment Update Error:',sqlcode,sqlerrm);
  END update_task_tag_assignment;
  
  PROCEDURE delete_task_tag_assignment(
@@ -258,7 +251,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Tag Assignment Delete Error:'||SQLERRM);
+        log_error('Task Tag Assignment Delete Error:',sqlcode,sqlerrm);
   END delete_task_tag_assignment;
   
   PROCEDURE insert_task_template(
@@ -273,7 +266,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Insertion Error:'||SQLERRM);
+        log_error('Task Template Insertion Error:',sqlcode,sqlerrm);
  END insert_task_template;
  
  PROCEDURE update_task_template(
@@ -290,7 +283,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Update Error:'||SQLERRM);
+       log_error('Task Template Update Error:',sqlcode,sqlerrm);
  END update_task_template;
  
  PROCEDURE delete_task_template(
@@ -303,7 +296,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Delete Error:'||SQLERRM);
+      log_error('Task Template Delete Error:',sqlcode,sqlerrm);
   END delete_task_template;
   
  PROCEDURE insert_task_template_assignment(
@@ -317,7 +310,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Assignment Insertion Error:'||SQLERRM);
+       log_error('Task Template Assignment Insertion Error:',sqlcode,sqlerrm);
  END insert_task_template_assignment;
   
  PROCEDURE update_task_template_assignment(
@@ -334,7 +327,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Assignment Update Error:'||SQLERRM);
+       log_error('Task Template Assignment Update Error:',sqlcode,sqlerrm);
  END update_task_template_assignment;
   
  PROCEDURE delete_task_template_assignment(
@@ -347,7 +340,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Template Assignment Delete Error:'||SQLERRM);
+       log_error('Task Template Assignment Delete Error:',sqlcode,sqlerrm);
   END delete_task_template_assignment;
   
   PROCEDURE insert_time_tracking(
@@ -365,7 +358,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Time Tracking Insertion Error:'||SQLERRM);
+       log_error('Time Tracking Insertion Error:',sqlcode,sqlerrm);
  END insert_time_tracking;
  
  PROCEDURE update_time_tracking(
@@ -388,7 +381,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Time Tracking Update Error:'||SQLERRM);
+      log_error('Time Tracking Update Error:',sqlcode,sqlerrm);
  END update_time_tracking;
 
   
@@ -402,7 +395,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Time Tracking Delete Error:'||SQLERRM);
+       log_error('Time Tracking Delete Error:',sqlcode,sqlerrm);
   END delete_time_tracking;
   
  PROCEDURE insert_progress_report(
@@ -419,7 +412,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Progress Report Insertion Error:'||SQLERRM);
+      log_error('Progress Report Insertion Error:',sqlcode,sqlerrm);
  END insert_progress_report;
  
  
@@ -442,7 +435,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
  EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Progress Report Update Error:'||SQLERRM);
+      log_error('Progress Report Update Error:',sqlcode,sqlerrm);
  END update_progress_report;
  
  
@@ -456,7 +449,7 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   EXCEPTION
   WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Progress Report Delete Error:'||SQLERRM);
+       log_error('Progress Report Delete Error:',sqlcode,sqlerrm);
   END delete_progress_report;
   
   
@@ -527,5 +520,6 @@ CREATE OR REPLACE PACKAGE pkg_task_details AS
   END delete_to_do_list;
  
 END pkg_task_details;
+
  
  
