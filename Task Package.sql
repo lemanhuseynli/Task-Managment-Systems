@@ -1,5 +1,4 @@
 CREATE OR REPLACE PACKAGE pkg_tasks AS
- PROCEDURE raise_error(p_error_message VARCHAR2);
   PROCEDURE insert_task(
   p_task_id             task.task_ıd%type,
   p_title               task.tıtle%type,
@@ -25,12 +24,7 @@ CREATE OR REPLACE PACKAGE pkg_tasks AS
 END pkg_tasks;
 
 CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
-  PROCEDURE raise_error(p_error_message VARCHAR2) AS
-   BEGIN
-    ROLLBACK;
-    RAISE_APPLICATION_ERROR(-20000, p_error_message);
-  END raise_error;
-  
+
   PROCEDURE insert_task(
     p_task_id             task.task_ıd%type,
     p_title               task.tıtle%type,
@@ -47,7 +41,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Insertion Error:'||SQLERRM);
+       log_error('Task Insertion Error',sqlcode, sqlerrm);
   END insert_task;
 
   PROCEDURE update_task(
@@ -74,7 +68,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
      EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Update Error:'||SQLERRM);
+       log_error('Task Update Error',sqlcode, sqlerrm);
   END update_task;
    PROCEDURE delete_task(
    p_task_id             task.task_ıd%type) AS
@@ -84,9 +78,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_tasks AS
            EXCEPTION
    WHEN OTHERS THEN
      ROLLBACK;
-       raise_error('Task Delete Error:'||SQLERRM);
+       log_error('Task Delete Error',sqlcode, sqlerrm);
     END delete_task;
 END pkg_tasks;
-
-
-
