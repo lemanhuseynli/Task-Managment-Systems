@@ -153,19 +153,4 @@ CREATE TABLE Task_Template_Assignment(
  FOREIGN KEY (User_Id)
  REFERENCES Users(User_Id);
  
-CREATE TABLE To_Do_Item(
-Item_Id   NUMBER PRIMARY KEY,
-List_Id   NUMBER,
-Task_Id   NUMBER
-);
 
- ALTER TABLE To_Do_Item
- ADD CONSTRAINT fk_to_do_list_id 
- FOREIGN KEY (List_Id)
- REFERENCES To_Do_List(List_Id);
- 
- ALTER TABLE To_Do_Item
- ADD CONSTRAINT fk_to_do_list_task_id 
- FOREIGN KEY (Task_Id)
- REFERENCES Task(Task_Id);
- 
