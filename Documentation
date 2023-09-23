@@ -1,1 +1,679 @@
-
+ TASK MANAGMENT SYSTEMS
+Giriş:
+Bu sənəd tapşırıq idarəetmə sistemi üçün Oracle SQL 
+verilənlər bazasının dizaynını və strukturunu təsvir edir. Bu 
+verilənlər bazası istifadəçilərə tapşırıqlar yaratmaq, təyin 
+etmək, izləmək və tamamlamaq imkanı verir. O, həmçinin 
+tapşırıqların asılılıqlarını izləmək və tərəqqi hesabatları 
+yaratmaq üçün lazım olan məlumatların saxlanmasını və 
+əməliyyatları təmin edir.
+Bu verilənlər bazası dizaynının məqsədi iş axınlarını 
+təkmilləşdirmək, tapşırıqları izləmək və təyin etməyi 
+asanlaşdırmaq və istifadəçilərə daha yaxşı tapşırıqların idarə 
+edilməsi təcrübəsi təqdim etməkdir. Verilənlər bazası dizaynı 
+istifadəçilərə tapşırıqları effektiv şəkildə idarə etməyə kömək 
+etmək üçün optimallaşdırılıb.
+Aşağıda verilənlər bazasının əsas komponentləri və onların 
+əlaqələri haqqında ətraflı məlumat tapa bilərsiniz.
+Bu giriş bölməsi oxuculara verilənlər bazanızın məqsədini və 
+əhəmiyyətini tez başa düşməyə imkan verir. Daha sonra 
+verilənlər bazanızın strukturu, cədvəllər, sütunlar, əlaqələr və 
+əməliyyatlar haqqında daha ətraflı məlumat vermək üçün 
+sənədlərinizin qalan hissəsində davam edə bilərsiniz.
+MƏQSƏD:
+-Son tarixləri əvvəlcədən təyin etmək üçün tapşırıqların 
+planlaşdırılması.
+-Xüsusi vəziyyətlər üçün yeniləmək üçün tapşırıqların 
+fərdiləşdirilməsi və redaktə edilməsi.
+-Daxili iş yoldaşları, xarici tərəfdaşlar və ya hər ikisini əhatə 
+edə bilən tapşırıq tapşırığı.
+-İstifadəçilərə qarşıdan gələn vəzifələr və məsuliyyətlər 
+haqqında xatırlatmaq üçün bildirişlər/Xəbərdarlıqlar.
+-İş prosesinizdə təkrarlanan addımları standartlaşdırmaq üçün 
+təkrarlanan tapşırıqlar və ya şablonlar.
+-Tapşırıq daxilində əlavə addımlar yaratmaq üçün alt 
+tapşırıqlar və ya ana tapşırıqlar.
+-Tapşırıqlara sərf olunan vaxtın miqdarını qeyd etmək üçün 
+Vaxt İzləmə.
+-Ümumi məqsədlə bağlı cari yerləşdirməni izləmək üçün 
+tərəqqi hesabatı.
+-Ümumi komanda və ya layihə üzrə qruplaşdırmaq üçün 
+teqlər, etiketlər və kanallardan istifadə edərək tapşırıqların 
+təşkili.
+-Asan tapşırıqların vizuallaşdırılması üçün görüləcək işlər 
+siyahıları.
+CƏDVƏLLƏRİN ER DİAGRAMI:
+Bazadakı Cədvəllər:
+1.Users table
+"Users" cədvəli tapşırıqların idarə edilməsi sistemimizin 
+mühüm komponentidir. Tətbiq daxilində istifadəçi ilə 
+bağlı məlumat üçün mərkəzləşdirilmiş repozitor kimi 
+xidmət edir. Bu cədvəldəki hər bir qeyd sistemimizlə 
+qarşılıqlı əlaqədə olan fərdi istifadəçini təmsil edir.
+Column name Column Type Description
+User_id number İstifadəçinin 
+id’si
+First_name varchar2 İstifadəçinin 
+adı
+Last_name varchar2 İstifadəçinin 
+soyadı
+Email varchar2 İstifadəçinin 
+email’i
+Phone_number varchar2 İstifadəçinin 
+əlaqə nömrəsi
+Job_id varchar2 İstifadəçinin 
+vəzifəsi 
+Salary number İstifadəçinin 
+əməkhaqqısı
+2.Task Table
+"Tapşırıq" cədvəli layihələr üzrə tapşırıqları və 
+tapşırıqları səmərəli şəkildə idarə etmək və izləmək 
+üçün nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin əsas komponentidir. Bu cədvəl sistem 
+daxilindəki hər bir tapşırıq haqqında hərtərəfli 
+təfərrüatları əks etdirir.
+Tapşırıqlar Cədvəli aşağıdakı əsas məqsədlərə xidmət 
+edir:
+Tapşırıqların İdarə Edilməsi: O, bütün tapşırıqlar üçün 
+mərkəzi depo rolunu oynayır və istifadəçilərə 
+tapşırıqların gedişatını yaratmağa, yeniləməyə və 
+izləməyə imkan verir.
+Tapşırıq: Tapşırıqlar xüsusi istifadəçilərə və ya 
+komandalara təyin edilir, bu da məsul tərəfləri müəyyən 
+etməyi asanlaşdırır.
+Son Tarixin İzlənməsi: Vaxtında tamamlanmasını təmin 
+etmək üçün tapşırıqların son tarixlərini qeyd edir.
+Status Monitorinqi: Tapşırıqların statusunu izləyir 
+(məsələn, Açıq, Davam edir, Tamamlandı).
+Prioritet Təyinatı: İş yükünü effektiv idarə etmək üçün 
+tapşırıqların prioritet səviyyələrini təyin edir.
+Asılılığın İdarə Edilməsi: Layihə daxilində tapşırıq 
+əlaqələrini müəyyən etməyə kömək edən tapşırıq 
+asılılıqlarını dəstəkləyir.
+Column name Column type Description
+Task_id number Tapşırığı id’si
+Title varchar2 Tapşırığı təsvir 
+edən qısa başlıq.
+Description varchar2 Tapşırıq haqqında 
+ətraflı məlumat.
+Deadline date Tapşırığın 
+tamamlanmalı 
+olduğu tarix.
+Status varchar2 Tapşırıqın cari 
+vəziyyəti
+Priority Varchar2 Tapşırığın prioritet 
+səviyyəsi, işin 
+prioritetləşdirilməsi
+nə kömək edir
+Creator_user_id number
+Tapşırığı yaradan 
+istifadəçiyə istinad 
+edən xarici açar.
+Assigned_
+user_id
+number Tapşırığa cavabdeh 
+olan istifadəçi və ya 
+komandanı 
+göstərən xarici açar
+3.Task Dependency Table
+"TaskDependency" cədvəli tapşırıqların idarə 
+edilməsi sistemimizdə həlledici rol oynayır, bu 
+da tapşırıq münasibətlərinin, xüsusən də 
+valideyn-övlad münasibətlərinin idarə 
+olunmasını asanlaşdırır. Layihənin idarə 
+edilməsinə strukturlaşdırılmış və mütəşəkkil 
+yanaşmanı təmin edərək, tapşırıqlar arasında 
+asılılıqları müəyyən etməyə imkan verir.
+Column name Column Type Description
+Dependency_id number xidmət edən hər 
+bir vəzifə asılılığı 
+üçün unikal 
+identifikator
+Parent_task_id number Ana tapşırığa 
+istinad edən xarici 
+açar.
+Sub_task_id number Alt tapşırığa 
+istinad edən xarici 
+açar.
+4.Task tag Table
+"Task_Tag" cədvəli tapşırıqların idarə edilməsi 
+sistemimizin əsas komponentidir və tapşırıqları 
+mənalı kateqoriyalara və ya etiketlərə ayırmağa 
+kömək etmək üçün nəzərdə tutulmuşdur və ümumi 
+atributlara malik tapşırıqların filtrasiyasını və yerini 
+asanlaşdırır.
+Column_name Column_type Description
+Tag_id number Əsas açar kimi 
+xidmət edən hər 
+bir tapşırıq 
+etiketi üçün 
+unikal 
+identifikator.
+Tag_name varchar2 Tapşırıq etiketi 
+üçün təsviri ad, 
+adətən qısa və 
+mənalıdır.
+5.Task Tag Assignment Table
+"Task_Tag_Assignment" cədvəli tapşırıqların idarə 
+edilməsi sistemimizin əsas komponentidir və 
+tapşırıqları xüsusi teqlər və ya etiketlərlə 
+əlaqələndirərək kateqoriyalara ayırmaq üçün nəzərdə 
+tutulmuşdur.
+Column_name Column_type Description
+Assignment_id number hər bir teq 
+təyinatı üçün 
+unikal 
+identifikator
+Task_id number Teqlə əlaqəli 
+tapşırığa istinad.
+Tag_id number Tapşırıq üçün 
+istifadə olunan 
+etiket və ya 
+etiketə istinad
+6.Task Notification Table
+"Task_Notification" cədvəli tapşırıqlarla bağlı real vaxt 
+ünsiyyəti və məlumat mübadiləsini təmin etməklə 
+tapşırıqların idarə edilməsi sistemimizdə mühüm rol 
+oynayır.
+Column_name Column_type Description
+Notification_id number hər bir bildiriş üçün 
+unikal identifikator
+Task_id number Bildirişlə əlaqəli 
+tapşırığa istinad.
+User_id number Bildirişi qəbul edən 
+istifadəçiyə istinad.
+Notification_
+message
+varchar Tapşırıq yeniləmələri, 
+şərhlər və ya vacib 
+məlumatları ehtiva edə 
+bilən bildiriş mesajının 
+məzmunu.
+Notificaiton_
+Date_time
+date Bildirişin göndərildiyi 
+tarix və vaxt.
+7.Task Template Table 
+"Task Template" cədvəli əvvəlcədən təyin edilmiş 
+tapşırıq şablonlarını təmin etməklə tapşırıqların 
+yaradılmasını sadələşdirmək və standartlaşdırmaq üçün 
+nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin əsas komponentidir.
+Column_name Column_type Description
+Template_id number Hər bir tapşırıq 
+şablonu üçün 
+unikal 
+identifikator.
+Template_name varchar2 Şablon üçün 
+istifadəçi 
+tərəfindən 
+müəyyən edilmiş 
+ad, onu asanlıqla 
+müəyyən edilə 
+bilər.
+Template_
+description
+varchar2 Şablondan 
+yaradılmış 
+tapşırıqlar üçün 
+əlavə kontekst və 
+ya təlimatları 
+təmin edən təsvir 
+və ya qeydlər.
+8.Task Template Assignment Table
+"Task Template" cədvəli əvvəlcədən təyin edilmiş 
+tapşırıq şablonlarını təmin etməklə tapşırıqların 
+yaradılmasını sadələşdirmək və standartlaşdırmaq üçün 
+nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin əsas komponentidir.
+Column_name Column_type Description
+Assignment_id number Hər tapşırıq 
+şablonu üçün 
+unikal 
+identifikator
+Task_id number Şablon üçün 
+istifadəçi 
+tərəfindən 
+müəyyən edilmiş 
+ad, onu asanlıqla 
+müəyyən edilə 
+bilər.
+Template_id number Şablondan 
+yaradılmış 
+tapşırıqlar üçün 
+əlavə kontekst və 
+ya təlimatları 
+təmin edən təsvir 
+və ya qeydlər.
+9.Time Tracking Table
+"Time Tracking" cədvəli istifadəçilərin müxtəlif 
+tapşırıqlara sərf etdiyi vaxtı qeyd etmək və idarə etmək 
+üçün nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin mühüm komponentidir. Bu, iş saatlarını 
+dəqiq izləməyə imkan verir və layihənin idarə 
+edilməsində və resursların bölüşdürülməsində kömək 
+edir.
+Column_name Column_type Description
+Time_
+tracking_id
+number Hər dəfə izləmə 
+girişi üçün unikal 
+identifikator
+Task_id number Əlaqədar tapşırığa 
+istinad edən, vaxt 
+izləmə girişini 
+xüsusi tapşırıqla 
+əlaqələndirən 
+xarici açar.
+Start_time date Tapşırıq üzərində 
+işin nə vaxt 
+başladığını 
+göstərən vaxt 
+möhürüş
+End_time date Tapşırıq üzərində 
+işin nə vaxt 
+bitdiyini göstərən 
+vaxt möhürü.
+Duration_ number Tapşırığa sərf 
+olunan vaxtın 
+hesablanmış 
+müddəti, tez-tez 
+Başlanğıc_Vaxtı 
+və Bitiş_Vaxtı 
+sahələrindən 
+hesablanır.
+User_id number İzlənən vaxta 
+cavabdeh olan 
+istifadəçiyə istinad 
+edən xarici açar.
+10.Progress Report Table
+"Progress Report" cədvəli tapşırıqların və layihələrin 
+gedişatına nəzarət etmək və hesabat vermək üçün 
+nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin mühüm tərkib hissəsidir. O, tapşırıqların 
+statusunu sənədləşdirmək üçün strukturlaşdırılmış üsul 
+təqdim edir, iş elementlərini izləməyi və idarə etməyi 
+asanlaşdırır.
+Column_name Column_type Description
+Progress_
+report_id
+number Hər bir irəliləyiş 
+hesabatı girişi üçün 
+unikal identifikator
+Task_id number Əlaqədar tapşırığa 
+istinad edən, tərəqqi 
+hesabatını xüsusi 
+tapşırıqla 
+əlaqələndirən xarici 
+açar.
+Progress_
+percentage
+varchar2 Tapşırığın 
+tamamlanma faizini 
+təmsil edən və 
+kəmiyyətcə ölçülə 
+bilən tərəqqi izləməyə 
+imkan verən sahə.
+Notes varchar2 İstifadəçilərin 
+tapşırığın statusu, 
+çətinlikləri və ya hər 
+hansı müvafiq 
+məlumat haqqında 
+ətraflı qeydlər və ya 
+şərhlər əlavə etməsi 
+üçün yer.
+Report_
+date_time
+date Report hesabatının nə 
+vaxt təqdim edildiyini 
+göstərən vaxt möhürü.
+11.To Do List Table
+"To Do List" cədvəli istifadəçilərə öz tapşırıqlarını 
+səmərəli şəkildə təşkil etmək və idarə etmək üçün 
+nəzərdə tutulmuş tapşırıqların idarə edilməsi 
+sistemimizin əsas komponentidir. O, müxtəlif 
+tapşırıqları prioritetləşdirməyi, kateqoriyalara ayırmağı 
+və tamamlamağı asanlaşdıran tapşırıqların siyahılarını 
+yaratmaq üçün strukturlaşdırılmış bir yol təqdim edir.
+Column_name Column_type Description
+List_id number Hər bir görüləcək 
+işlər siyahısı girişi 
+üçün unikal 
+identifikator
+List_name varchar2 Görüləcək işlər 
+siyahısı üçün onun 
+məqsədini və ya 
+kateqoriyasını təsvir 
+edən istifadəçi 
+tərəfindən müəyyən 
+edilmiş ad
+List_description varchar2 İstifadəçilərin siyahı 
+haqqında əlavə 
+təfərrüatlar və ya 
+qeydlər təqdim edə 
+biləcəyi isteğe bağlı 
+sahə.
+User_id number Görüləcək işlər 
+siyahısına sahib olan 
+istifadəçiyə istinad 
+edən xarici açar, hər 
+bir siyahının konkret 
+istifadəçi ilə 
+əlaqələndirilməsini 
+təmin edir.
+12.Log Error Table
+"LogErrors" cədvəli səhvlərlə bağlı məlumatı tutmaq və 
+saxlamaq üçün nəzərdə tutulmuş tapşırıqların idarə 
+edilməsi sistemimizin mühüm komponentidir. O, sistem 
+daxilində baş verən səhvləri, istisnaları və problemləri 
+qeyd etmək, şəffaflığı, problemlərin aradan 
+qaldırılmasını və səmərəli həllini təmin etmək üçün 
+depo rolunu oynayır.
+Column_name Column_type Description
+Calling_program varchar2 Səhvin baş 
+verdiyi 
+proqramın və ya 
+modulun adını 
+və ya 
+identifikatorunu 
+göstərir.
+Error_code number Kateqoriyalara 
+və sürətli 
+istinada kömək 
+edən xüsusi xəta 
+növü ilə əlaqəli 
+rəqəmsal kod.
+Error_message varchar2 Kontekst və təsir 
+daxil olmaqla, 
+xəta haqqında 
+əlavə təfərrüatlar 
+təqdim edən 
+mətn əsaslı 
+təsvir.
+Log_timestamp date Xətanın nə vaxt 
+qeydə alındığını 
+göstərən, 
+problemin 
+vaxtını izləməyə 
+kömək edən vaxt 
+möhürü.
+Package:pkg_users
+Pkg_users" paketi, Tapşırıq İdarəetmə Sistemi daxilində 
+istifadəçi ilə bağlı məlumatları idarə etmək üçün bir sıra 
+prosedur təmin edir. Bu, İstifadəçilər cədvəlində yeni 
+istifadəçi qeydlərinin əlavə edilməsi, yenilənməsi və silinməsi 
+prosedurları daxil olmaqla bir sıra prosedurları
+Prosedurlar
+Prosedur: insert_user
+• Təsvir: Bu prosedur, İstifadəçilər cədvəlinə yeni bir 
+istifadəçi qeydinin əlavə edilməsinə imkan verir.
+• Parametrlər:
+• p_first_name: İstifadəçinin adı.
+• p_last_name: İstifadəçinin soyadı.
+• p_email: İstifadəçinin e-poçt ünvanı.
+• p_phone_number: İstifadəçinin telefon nömrəsi.
+• p_job_id: İstifadəçinin işin ID-si.
+• p_salary: İstifadəçinin əmək haqqı.
+• İstifadə: Bu proseduru yeni bir istifadəçi əlavə etmək 
+üçün çağırın. İstifadəçi məlumatlarının əlavə edilməsini 
+idarə edir və əməliyyatı təsdiq edir. Əlavə zaman xətası 
+baş verərsə, o, qeyd edilir.
+Prosedur: update_user
+• Təsvir: Bu prosedur, İstifadəçilər cədvəlində mövcud bir 
+istifadəçinin məlumatlarının yenilənməsinə imkan verir.
+• Parametrlər:
+• p_user_id: Yenilənəcək istifadəçinin unikal 
+identifikatoru.
+• p_first_name: İstifadəçinin yeni adı.
+• p_last_name: İstifadəçinin yeni soyadı.
+• p_email: İstifadəçinin yeni e-poçt ünvanı.
+• p_phone_number: İstifadəçinin yeni telefon nömrəsi.
+• p_job_id: İstifadəçinin yeni işin ID-si.
+• p_salary: İstifadəçinin yeni əmək haqqı.
+• İstifadə: Bu proseduru mövcud bir istifadəçinin 
+məlumatlarını dəyişdirmək üçün çağırın. O, verilmiş 
+istifadəçi ID-sinə əsaslanaraq İstifadəçilər cədvəlində 
+yeniləmə əməliyyatını yerinə yetirir və əməliyyatı təsdiq 
+edir. Yeniləmə zamanı xətası baş verərsə, o, qeyd edilir.
+Prosedur: delete_user
+• Təsvir: Bu prosedur, İstifadəçilər cədvəlindən mövcud 
+bir istifadəçini silməyə imkan verir.
+• Parametrlər:
+• p_user_id: Silinəcək istifadəçinin unikal identifikatoru.
+• İstifadə: Bu proseduru sistemdən bir istifadəçini silmək 
+üçün çağırın. O, verilmiş istifadəçi ID-sinə əsaslanaraq 
+İstifadəçilər cədvəlindəki müvafiq istifadəçi qeydini silir. 
+Əməliyyatı təsdiq edir və silinmə zamanı xətası baş 
+verərsə, o, qeyd edilir.
+Xəta İdarəetmə:
+Bu paketdəki bütün prosedurlar xəta idarəetməni tətbiq 
+edirlər. Məlumat manipulyasiyası zamanı hər hansı bir 
+istisna və ya xəta baş verərsə, onlar uyğun xəbərlərlə 
+qeyd edilir
+Package: pkg_tasks
+Bu paket, tapşırıqların əlavə edilməsi, yenilənməsi və 
+silinməsi üçün prosedurlar təmin edir.
+Prosedurlar:
+1. **insert_task**
+ - Giriş Parametrləri:
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_title`: Tapşırığın başlığı.
+ - `p_description`: Tapşırığın təsviri.
+ - `p_deadline`: Tapşırığın son müddəti.
+ - `p_status`: Tapşırığın statusu.
+ - `p_priority`: Tapşırığın prioriteti.
+ - `p_creator_user_id`: Tapşırığın yaradan istifadəçi ID-si.
+ - `p_assigned_to_user_id`: Tapşırığın təyin edildiyi 
+istifadəçi ID-si.
+ - Məqsəd: Yeni bir tapşırığı `task` cədvəlinə əlavə edir.
+2. **update_task**
+ - Giriş Parametrləri:
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_title`: Tapşırığın başlığı.
+ - `p_description`: Tapşırığın təsviri.
+ - `p_deadline`: Tapşırığın son müddəti.
+ - `p_status`: Tapşırığın statusu.
+ - `p_priority`: Tapşırığın prioriteti.
+ - `p_creator_user_id`: Tapşırığın yaradan istifadəçi ID-si.
+ - `p_assigned_to_user_id`: Tapşırığın təyin edildiyi 
+istifadəçi ID-si.
+ - Məqsəd: Mövcud bir tapşırığı `task` cədvəlində yeniləyir.
+3. **delete_task**
+ - Giriş Parametrləri:
+ - `p_task_id`: Tapşırığın ID-si.
+ - Məqsəd: Bir tapşırığı `task` cədvəlindən silir.
+Bu prosedurlar tapşırıq məlumatlarının cədvələ daxil 
+edilməsini, yenilənməsini və silinməsini təmin edir. Hər bir 
+prosedur, müvafiq işləmə başlamaq üçün giriş parametrlərinin 
+daxil edilməsini gözləyir və əməliyyatı həyata keçirir. 
+Əməliyyatların baş tutması halında, dəyişikliklər bazada 
+təsdiqlənir (COMMIT edilir). Əgər bir səhv baş verirsə, 
+tədbiq digər prosedurlar vasitəsilə səhv haqda məlumatı qeyd 
+edir və baza əməliyyatları geri alır (ROLLBACK edir).
+Package:pkg_task_details 
+Bu paket, tapşırıqların və əlaqəli obyektlərin müxtəlif 
+aspektlərini idarə etmək üçün dizayn edilmişdir.
+Prosedurlar:
+1. **insert_task_dependency**
+ - Giriş Parametrləri:
+ - `p_dependency_id`: Asılılığın ID-si.
+ - `p_parent_task_id`: Ana tapşırığın ID-si.
+ - `p_sub_task_id`: Alt tapşırığın ID-si.
+ - Məqsəd: Yeni bir tapşırıq asılılığını 
+`task_dependency` cədvəlinə əlavə edir.
+2. **update_task_dependency**
+ - Giriş Parametrləri:
+ - `p_dependency_id`: Asılılığın ID-si.
+ - `p_parent_task_id`: Ana tapşırığın ID-si.
+ - `p_sub_task_id`: Alt tapşırığın ID-si.
+ - Məqsəd: Mövcud bir tapşırıq asılılığını 
+`task_dependency` cədvəlində yeniləyir.
+3. **delete_task_dependency**
+ - Giriş Parametrləri:
+ - `p_dependency_id`: Asılılığın ID-si.
+ - Məqsəd: Bir tapşırıq asılılığını `task_dependency` 
+cədvəlindən silir.
+4. **insert_task_tag**
+ - Giriş Parametrləri:
+ - `p_tag_id`: Etiketin ID-si.
+ - `p_tag_name`: Etiketin adı.
+ - Məqsəd: Yeni bir tapşırıq etiketini `task_tag` 
+cədvəlinə əlavə edir.
+5. **update_task_tag**
+ - Giriş Parametrləri:
+ - `p_tag_id`: Etiketin ID-si.
+ - `p_tag_name`: Etiketin adı.
+ - Məqsəd: Mövcud bir tapşırıq etiketini `task_tag` 
+cədvəlində yeniləyir.
+6. **delete_task_tag**
+ - Giriş Parametrləri:
+ - `p_tag_id`: Etiketin ID-si.
+ - Məqsəd: Bir tapşırıq etiketini `task_tag` cədvəlindən 
+silir.
+7. **insert_task_tag_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_tag_id`: Etiketin ID-si.
+ - Məqsəd: Yeni bir tapşırıq etiketi təyinatını 
+`task_tag_assignment` cədvəlinə əlavə edir.
+8. **update_task_tag_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_tag_id`: Etiketin ID-si.
+ - Məqsəd: Mövcud bir tapşırıq etiketi təyinatını 
+`task_tag_assignment` cədvəlində yeniləyir.
+9. **delete_task_tag_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - Məqsəd: Bir tapşırıq etiketi təyinatını 
+`task_tag_assignment` cədvəlindən silir.
+10. **insert_task_template**
+ - Giriş Parametrləri:
+ - `p_template_id`: Şablonun ID-si.
+ - `p_template_name`: Şablonun adı.
+ - `p_template_description`: Şablonun təsviri.
+ - Məqsəd: Yeni bir tapşırıq şablonunu 
+`task_template` cədvəlinə əlavə edir.
+11. **update_task_template**
+ - Giriş Parametrləri:
+ - `p_template_id`: Şablonun ID-si.
+ - `p_template_name`: Şablonun adı.
+ - `p_template_description`: Şablonun təsviri.
+ - Məqsəd: Mövcud bir tapşırıq şablonunu 
+`task_template` cədvəlində yeniləyir.
+12. **delete_task_template**
+ - Giriş Parametrləri:
+ - `p_template_id`: Şablonun ID-si.
+ - Məqsəd: Bir tapşırıq şablonunu `task_template` 
+cədvəlindən silir.
+13. **insert_task_template_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_template_id`: Şablonun ID-si.
+ - Məqsəd: Yeni bir tapşırıq şablonu təyinatını 
+`task_template_assignment` cədvəlinə əlavə edir.
+14. **update_task_template_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_template_id`: Şablonun ID-si.
+ - Məqsəd: Mövcud bir tapşırıq şablonu təyinatını 
+`task_template_assignment` cədvəlində yeniləyir.
+15. **delete_task_template_assignment**
+ - Giriş Parametrləri:
+ - `p_assignment_id`: Təyinatın ID-si.
+ - Məqsəd: Bir tapşırıq şablonu təyinatını 
+`task_template_assignment` cədvəlindən silir.
+16. **insert_time_tracking**
+ - Giriş Parametrləri:
+ - `p_time_tracking_id`: Zaman izləmənin ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_start_time`: İzləmənin başlama vaxtı.
+ - `p_end_time`: İzləmənin bitmə vaxtı.
+ - `p_duration_minutes`: İzləmənin müddəti 
+(dəqiqə).
+ - Məqsəd: Yeni bir vaxt izləməsini `time_tracking` 
+cədvəlinə əlavə edir.
+17. **update_time_tracking**
+ - Giriş Parametrləri:
+ - `p_time_tracking_id`: Zaman izləmənin ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_start_time`: İzləmənin başlama vaxtı.
+ - `p_end_time`: İzləmənin bitmə vaxtı.
+ - `p_duration_minutes`: İzləmənin müddəti 
+(dəqiqə).
+ - Məqsəd: Mövcud bir vaxt izləməsini 
+`time_tracking` cədvəlində yeniləyir.
+18. **delete_time_tracking**
+ - Giriş Parametrləri:
+ - `p_time_tracking_id`: Zaman izləmənin ID-si.
+ - Məqsəd: Bir vaxt izləməsini `time_tracking` 
+cədvəlindən silir.
+19. **insert_task_checklist**
+ - Giriş Parametrləri:
+ - `p_checklist_id`: Siyahının ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_item_description`: Siyahının təsviri.
+ - `p_completed`: Tədbiq olunub (boolean).
+ - Məqsəd: Yeni bir tapşırıq siyahısını `task_checklist` 
+cədvəlinə əlavə edir.
+20. **update_task_checklist**
+ - Giriş Parametrləri:
+ - `p_checklist_id`: Siyahının ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_item_description`: Siyahının təsviri.
+ - `p_completed`: Tədbiq olunub (boolean).
+ - Məqsəd: Mövcud bir tapşırıq siyahısını 
+`task_checklist` cədvəlində yeniləyir.
+21. **delete_task_checklist**
+ - Giriş Parametrləri:
+ - `p_checklist_id`: Siyahının ID-si.
+ - Məqsəd: Bir tapşırıq siyahısını `task_checklist` 
+cədvəlindən silir.
+22. **insert_to_do_list**
+ - Giriş Parametrləri:
+ - `p_list_id`: To-do siyahısının ID-si.
+ - `p_list_name`: To-do siyahısının adı.
+ - `p_list_description`: To-do siyahısının təsviri.
+ - `p_user_id`: İstifadəçinin ID-si.
+ - Məqsəd: Yeni bir to-do siyahısını `to_do_list` 
+cədvəlinə əlavə edir.
+23. **update_to_do_list**
+ - Giriş Parametrləri:
+ - `p_list_id`: To-do siyahısının ID-si.
+ - `p_list_name`: To-do siyahısının adı.
+ - `p_list_description`: To-do siyahısının təsviri.
+ - `p_user_id`: İstifadəçinin ID-si.
+ - Məqsəd: Mövcud bir to-do siyahısını `to_do_list` 
+cədvəlində yeniləyir.
+24. **delete_to_do_list**
+ - Giriş Parametrləri:
+ - `p_list_id`: To-do siyahısının ID-si.
+ - Məqsəd: Bir to-do siyahısını `to_do_list` 
+cədvəlindən silir.
+25. **insert_task_notification**
+ - Giriş Parametrləri:
+ - `p_notification_id`: Bildirimin ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_user_id`: İstifadəçinin ID-si.
+ - `p_notification_message`: Bildirim mesajı.
+ - `p_notification_date_time`: Bildirim tarix vaxtı.
+ - Məqsəd: Yeni bir tapşırıq bildirimini 
+`task_notification` cədvəlinə əlavə edir.
+26. **update_task_notification**
+ - Giriş Parametrləri:
+ - `p_notification_id`: Bildirimin ID-si.
+ - `p_task_id`: Tapşırığın ID-si.
+ - `p_user_id`: İstifadəçinin ID-si.
+ - `p_notification_message`: Bildirim mesajı.
+ - `p_notification_date_time`: Bildirim tarix vaxtı.
+ - Məqsəd: Mövcud bir tapşırıq bildirimini 
+`task_notification` cədvəlində yeniləyir.
+27. **delete_task_notification**
+ - Giriş Parametrləri:
+ - `p_notification_id`: Bildirimin ID-si.
+ - Məqsəd: Bir tapşırıq bildirimini `task_notification` 
+cədvəlindən silir.
